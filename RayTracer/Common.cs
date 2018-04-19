@@ -6,10 +6,15 @@ using System.Threading.Tasks;
 
 namespace RayTracer
 {
-    class Program
+    public class Common
     {
-        static void Main(string[] args)
+        public class Vector
         {
+            float X { get; set; }
+
+            float Y { get; set; }
+
+            float Z { get; set; }
         }
     }
 }

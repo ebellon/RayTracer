@@ -6,10 +6,7 @@ using System.Threading.Tasks;
 
 namespace RayTracer
 {
-    class Program
+    class Sphere
     {
-        static void Main(string[] args)
-        {
-        }
     }
 }

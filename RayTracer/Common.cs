@@ -10,11 +10,6 @@ namespace RayTracer
     {
         public class Vector
         {
-            float X { get; set; }
-
-            float Y { get; set; }
-
-            float Z { get; set; }
         }
     }
 }

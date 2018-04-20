@@ -4,3 +4,6 @@
 
 /.vs/RayTracer/v15/Server/sqlite3/storage.ide-wal
 /.vs/RayTracer/v15/Server/sqlite3/storage.ide-shm
+/RayTracer/bin/Debug/RayTracer.pdb
+/RayTracer/bin/Debug/RayTracer.exe.config
+/RayTracer/bin/Debug/RayTracer.exe

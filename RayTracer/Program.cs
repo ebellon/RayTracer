@@ -28,14 +28,17 @@ namespace RayTracer
                 var verticalOffset = new Vector3D(0, 2, 0);
                 var origin = new Vector3D(0, 0, 0);
 
+                Sphere sphere = new Sphere(new Vector3D(0,0,-1), 0.5);
+
                 for (int y = Height -1; y >= 0; y--)
                     for (int x = 0; x < Widht; x++)
                     {
                         float u = (float)x / Widht;
                         float v = (float)y / Height;
                         Ray ray = new Ray(origin, lowerLeftCorner + u * horizontalOffset + v * verticalOffset);
-                        
-                        Color color = CalculateRayColor(ray);
+
+
+                        Color color = CalculateRayColor(ray, sphere);
                         WriteRgb(output, color.R, color.G, color.B);
                     }
             }
@@ -56,8 +59,11 @@ namespace RayTracer
             file.WriteLine(R + " " + G +  " " + B);
         }
 
-        private static Color CalculateRayColor(Ray ray)
+        private static Color CalculateRayColor(Ray ray, Sphere sphere)
         {
+            if (sphere.IntersectsRay(ray))
+                return Colors.Red;
+
             ray.Direction.Normalize();
             var t = (ray.Direction.Y + 1) * 0.5;
 

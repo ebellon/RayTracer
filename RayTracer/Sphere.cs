@@ -6,9 +6,12 @@ namespace RayTracer
 {
     class Sphere : IIntersect
     {
-        Vector3D Center { get; set; }
+        private const double MaxOffset = double.MaxValue;
+        private const double MinOffset = 0.0;
 
-        double Radius { get; set; }
+        Vector3D Center { get;  }
+
+        double Radius { get; }
 
         public Sphere(Vector3D center, double radius)
         {
@@ -16,7 +19,7 @@ namespace RayTracer
             this.Radius = radius;
         }
 
-        public Vector3D? GetIntersection(Ray ray)
+        public List<double> GetIntersection(Ray ray)
         {
             //Intersection Ray / Sphere
             //Sphere eq = dot((P - c)(P - c)) = RR (P = [x, y, z], c = [cx, cy, cz])
@@ -36,12 +39,25 @@ namespace RayTracer
                 return null;
             }
 
-            //var posSolution = (-b + Math.Sqrt(discriminant) / 2 * a);
-            var negSolution = (-b - Math.Sqrt(discriminant)) / 2 * a;
+            List<double> result = new List<double>();
 
-            return ray.GetPosition(negSolution);
+            var temp = Math.Sqrt(discriminant);
+            var temp2 = 2 * a;
+            var negativeSolution = (-b - temp) / temp2;
+            var positiveSolution = (-b + temp) / temp2;
+
+            if (negativeSolution > MinOffset && negativeSolution < MaxOffset)
+            {
+                result.Add(negativeSolution);
+            }
+
+            if (positiveSolution > MinOffset && positiveSolution < MaxOffset)
+            {
+                result.Add(positiveSolution);
+            }
+
+            return result;
         }
-
 
         public Vector3D GetNormalAtIntersection(Vector3D intersectionPoint)
         {

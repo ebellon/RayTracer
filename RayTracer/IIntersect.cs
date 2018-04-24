@@ -5,7 +5,7 @@ namespace RayTracer
 {
     public interface IIntersect
     {
-        Vector3D? GetIntersection(Ray ray);
+        List<double> GetIntersection(Ray ray);
 
         Vector3D GetNormalAtIntersection(Vector3D intersectionPoint);
     }

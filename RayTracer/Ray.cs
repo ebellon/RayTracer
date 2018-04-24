@@ -19,14 +19,9 @@ namespace RayTracer
             this.Direction = direction;
         }
 
-        public Vector3D GetPoint(float factor)
+        public Vector3D GetPosition(double offset)
         {
-            return this.Origin + factor * this.Direction;
-        }
-
-        public override string ToString()
-        {
-            return "Origin" + this.Origin.ToString() + " Direction " + this.Direction.ToString();
+            return this.Origin + offset * this.Direction;
         }
     }
 }

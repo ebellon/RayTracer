@@ -1,13 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Media.Media3D;
 
 namespace RayTracer
 {
-    class Sphere
+    class Sphere : IIntersect
     {
         Vector3D Center { get; set; }
 
@@ -19,26 +16,39 @@ namespace RayTracer
             this.Radius = radius;
         }
 
-        public bool IntersectsRay(Ray ray)
+        public Vector3D? GetIntersection(Ray ray)
         {
-             /* Intersection Ray / Sphere
-             * Sphere eq = dot((P - c)(P - c)) = RR (P = [x, y, z], c = [cx, cy, cz])
-             * Intersection then: dot((ray - c)(ray - c)) = RR ->  dot((A + Bt -C)(A+Bt-C)) = RR
-             * tt*dot(B,B) +2t *dot(B, A-C ) + dot(A-C, A-C) - RR = 0;
-             */
+            //Intersection Ray / Sphere
+            //Sphere eq = dot((P - c)(P - c)) = RR (P = [x, y, z], c = [cx, cy, cz])
+            //Intersection then: dot((ray - c)(ray - c)) = RR ->  dot((A + Bt -C)(A+Bt-C)) = RR
+            //tt*dot(B,B) +2t *dot(B, A-C ) + dot(A-C, A-C) - RR = 0;
 
-            double a = Vector3D.DotProduct(ray.Direction, ray.Direction);
-            double b =2* Vector3D.DotProduct(ray.Direction, ray.Origin - this.Center);
-            double c = Vector3D.DotProduct(ray.Origin - this.Center, ray.Origin - this.Center) - this.Radius * this.Radius;
+            var oc = ray.Origin - this.Center;
+            var a = Vector3D.DotProduct(ray.Direction, ray.Direction);
+            var b = 2 * Vector3D.DotProduct(oc, ray.Direction);
+            var c = Vector3D.DotProduct(oc, oc) - this.Radius * this.Radius;
 
-            double discriminant = b * b - 4 * a * c;
+            var discriminant = b * b - 4 * a * c;
 
-            if (discriminant >= 0)
-                return true;
+            // No solution!
+            if (discriminant < 0)
+            {
+                return null;
+            }
 
-            return false;
+            //var posSolution = (-b + Math.Sqrt(discriminant) / 2 * a);
+            var negSolution = (-b - Math.Sqrt(discriminant)) / 2 * a;
 
+            return ray.GetPosition(negSolution);
         }
 
+
+        public Vector3D GetNormalAtIntersection(Vector3D intersectionPoint)
+        {
+            var normal = (intersectionPoint - this.Center);
+            normal.Normalize();
+
+            return normal;
+        }
     }
 }

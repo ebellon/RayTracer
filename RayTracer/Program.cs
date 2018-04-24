@@ -1,10 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Media;
 using System.Windows.Media.Media3D;
 
@@ -61,15 +57,26 @@ namespace RayTracer
 
         private static Color CalculateRayColor(Ray ray, Sphere sphere)
         {
-            if (sphere.IntersectsRay(ray))
-                return Colors.Red;
+            Vector3D? intersection = sphere.GetIntersection(ray);
 
-            ray.Direction.Normalize();
-            var t = (ray.Direction.Y + 1) * 0.5;
+            int r, g, b;
 
-            var r = (int)(255 * (1 - t) + 255 * t * 0.5);
-            var g = (int)(255 * (1 - t) + 255 * t * 0.7);
-            var b = (int)(255 * (1 - t) + 255 * t);
+            if (intersection != null)
+            {
+                var normalAtIntersection = sphere.GetNormalAtIntersection(intersection.Value);
+                r = (int)(255 * 0.5 * (normalAtIntersection.X + 1));
+                g = (int)(255 * 0.5 * (normalAtIntersection.Y + 1));
+                b = (int)(255 * 0.5 * (normalAtIntersection.Z + 1));
+            }
+            else
+            {
+                ray.Direction.Normalize();
+                var t = (ray.Direction.Y + 1) * 0.5;
+
+                 r = (int)(255 * (1 - t) + 255 * t * 0.5);
+                 g = (int)(255 * (1 - t) + 255 * t * 0.7);
+                 b = (int)(255 * (1 - t) + 255 * t);
+            }
 
             return Color.FromArgb(1, (byte)r, (byte)g, (byte)b);
         }
